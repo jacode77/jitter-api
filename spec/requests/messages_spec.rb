@@ -31,6 +31,7 @@ RSpec.describe "/messages", type: :request do
     it "returns a message based on the param" do
       get "/messages/3"
       expect(response).to have_http_status(:success)
+      # this is possible as the format is text, you cannot test it on json
       expect(response.body).to include("Message test 1")
       # expect(JSON.parse(response.body).size).to eq(2)
     end
