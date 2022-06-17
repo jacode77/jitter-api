@@ -5,8 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+if User.count == 0
+    User.create(username: "jacqui", email: "jacqui@email.com", password: "password1", password_confirmation: "password1")
+    User.create(username: "kim", email: "kim@email.com", password: "password2", password_confirmation: "password2")
+end
+
+
 if Message.count == 0
-    Message.create(text: "So use to manually setting it all up haha")
-    Message.create(text: "This is scaffolding magic?")
-    Message.create(text: "A bit rusty with Rails now but why are they not explicitly displayed in the routers file?")
+    Message.create(text: "So use to manually setting it all up haha", user_id: 1)
+    Message.create(text: "This is scaffolding magic?", user_id: 2)
+    Message.create(text: "A bit rusty with Rails now but why are they not explicitly displayed in the routers file?", user_id: 2)
 end
