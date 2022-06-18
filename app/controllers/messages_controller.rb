@@ -28,7 +28,8 @@ class MessagesController < ApplicationController
     # @message = Message.new(message_params)
     @message = current_user.messages.create(message_params)
     if @message.save
-      render json: @message, status: :created #, location: @message
+      # adding the transform_message to @message will render the data as desired
+      render json: @message.transform_message, status: :created #, location: @message
     else
       render json: @message.errors, status: :unprocessable_entity
     end
