@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
   def index
     # changed from Message.all to Message.order... so we can render the other we want it displayed
    @messages = []
-    @messages = Message.order("updated_at DESC").each do |message|
+   Message.order("updated_at DESC").each do |message|
       @messages << message.transform_message
     end
 
@@ -37,7 +37,7 @@ class MessagesController < ApplicationController
   # PATCH/PUT /messages/1
   def update
     if @message.update(message_params)
-      render json: @message
+      render json: @message.transform_message
     else
       render json: @message.errors, status: :unprocessable_entity
     end
