@@ -7,10 +7,30 @@ class MessagesController < ApplicationController
   def index
     # changed from Message.all to Message.order... so we can render the other we want it displayed
    @messages = []
-   Message.order("updated_at DESC").each do |message|
+
+   if (params[:username])
+    Message.find_by_user(params[:username]).order('updated_at DESC') do |message|
       @messages << message.transform_message
     end
+   else
+    Message.order("updated_at DESC").each do |message|
+      @messages << message.transform_message
+    end
+   end
 
+   if @messages.count == 0
+    render json: {error: 'Messages not found'}
+   else
+    render json: @messages
+   end
+  end
+
+  # GET messages for specific users - searches specific users messages
+  def user_messages
+    @messages = []
+    Message.find_by_user(params[:username]).order('updated_at DESC') do |message|
+      @messages << message.transform_message
+    end
     render json: @messages
   end
 
@@ -21,6 +41,16 @@ class MessagesController < ApplicationController
     else
       render json: {"error": "Message not found, wrong ID"}, status: :not_found
     end
+  end
+
+  # GET messages for current user
+  def my_messages
+    @messages = []
+
+    current_user.messages.order("updated_at DESC").each do |message|
+      @messages << message.transform_message
+    end
+    render json: @messages
   end
 
   # POST /messages
@@ -52,8 +82,12 @@ class MessagesController < ApplicationController
   private
 
   def check_ownership
-    if current_user.id != @message.user.id
-      render json: {error: "Unauthorised to perform this action"}
+    # if the user is an admin, it will skip the onership check
+    if !(current_user is_admin || current_user.id == @message.user.id)
+    # if !current_user.is_admin
+    #   if current_user.id != @message.user.id
+        render json: {error: "Unauthorised to perform this action"}
+      # end
     end
   end
     # Use callbacks to share common setup or constraints between actions.

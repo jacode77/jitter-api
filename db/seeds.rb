@@ -5,9 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+# boolean value is defaulted to false, but can be good to define in case
 if User.count == 0
-    User.create(username: "jacqui", email: "jacqui@email.com", password: "password1", password_confirmation: "password1")
-    User.create(username: "kim", email: "kim@email.com", password: "password2", password_confirmation: "password2")
+    User.create(username: "jacqui", email: "jacqui@email.com", password: "password1", password_confirmation: "password1", is_admin: true)
+    User.create(username: "kim", email: "kim@email.com", password: "password2", password_confirmation: "password2", is_admin: false)
 end
 
 
