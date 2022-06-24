@@ -10,7 +10,10 @@ class UsersController < ApplicationController
             auth_token = Knock::AuthToken.new payload: {sub: @user.id}
             render json: {username: @user.username, jwt: auth_token.token}, status: :created
         else
-            render json: @user.errors, status: :unprocessable_entity
+            # render json: @user.errors, status: :unprocessable_entity
+            print @user.errors.attribute_names
+            # render json: {error: "Invalid signup"}
+            render json: {error: @user.errors}
         end
     end
 
