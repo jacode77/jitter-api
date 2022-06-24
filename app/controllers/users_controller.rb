@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
 
+    # create user details from form
     def create
         @user = User.new(user_params)
+        # by default all users are set to false for admin
         @user.is_admin = false
-        @user.save
+        
         if @user.save
             auth_token = Knock::AuthToken.new payload: {sub: @user.id}
             render json: {username: @user.username, jwt: auth_token.token}, status: :created
